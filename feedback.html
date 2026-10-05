@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback | Lavendra Collection</title>
+    <meta name="description" content="Lavendra Collection. ඔබට ඇති ඕනෑම අදහසක් හෝ ප්‍රතිචාරයක් අප වෙත යොමු කරන්න.">
+    <meta name="keywords" content="Lavendra Collection, Feedback, Review, Customer Feedback, Sri Lanka, අදහස්, ප්‍රතිචාර">
+    <link rel="canonical" href="https://lavendracollection.online/feedback.html">
+    <link rel="icon" type="image/png" href="https://lavendracollection.online/logo.png">
+        
+    <!-- Open Graph Metadata -->
+    <meta property="og:title" content="Feedback | Lavendra Collection">
+    <meta property="og:description" content="Lavendra Collection. ඔබට ඇති ඕනෑම අදහසක් හෝ ප්‍රතිචාරයක් අප වෙත යොමු කරන්න.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lavendracollection.online/feedback.html">
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Customer Feedback | Lavendra Collection",
+      "description": "Lavendra Collection. ඔබට ඇති ඕනෑම අදහසක් හෝ ප්‍රතිචාරයක් අප වෙත යොමු කරන්න."
+    }
+    </script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Noto+Serif+Sinhala:wght@400;600;700&family=Noto+Sans+Sinhala:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        :root {
+            --primary: #2C2A29;
+            --secondary: #8C7B6D;
+            --accent: #D4AF37; /* Muted Gold */
+            --bg-light: #F9F8F6;
+            --white: #FFFFFF;
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --shadow-subtle: 0 15px 35px rgba(44, 42, 41, 0.04);
+            --shadow-hover: 0 25px 50px rgba(44, 42, 41, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Noto Sans Sinhala', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--primary);
+            line-height: 1.8;
+            overflow-x: hidden;
+            font-size: 15px;
+            padding-top: 85px;
+        }
+
+        h1, h2, h3, h4, .serif-font {
+            font-family: 'Playfair Display', 'Noto Serif Sinhala', serif;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* --- NAVIGATION --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: var(--white);
+            border-bottom: 1px solid rgba(140, 123, 109, 0.1);
+            box-shadow: var(--shadow-subtle);
+            transition: var(--transition);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--primary);
+        }
+
+        .logo span {
+            color: var(--accent);
+            font-style: italic;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 85px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: var(--transition);
+            position: relative;
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--primary);
+            padding: 5px;
+        }
+
+        /* --- PAGE HEADER HERO --- */
+        .page-header {
+            padding: 5rem 0 3rem 0;
+            background: var(--white);
+            color: var(--primary);
+            text-align: center;
+            position: relative;
+            border-bottom: 1px solid rgba(140, 123, 109, 0.1);
+        }
+
+        .page-header span {
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.8rem;
+        }
+
+        .page-header h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .page-header p {
+            color: var(--secondary);
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- CONTENT SECTION --- */
+        .policy-content-section {
+            padding: 4rem 0 5rem 0;
+            background-color: var(--bg-light);
+        }
+
+        .policy-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* --- LUXURY MASTER CARD --- */
+        .master-policy-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 3.5rem 3rem;
+            box-shadow: var(--shadow-subtle);
+            border: 1px solid rgba(140, 123, 109, 0.1);
+            position: relative;
+            margin-bottom: 2.5rem;
+        }
+
+        @media(max-width: 768px) {
+            .master-policy-card {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        /* --- MODERN INTERACTIVE STAR RATING --- */
+        .rating-wrapper {
+            background: var(--bg-light);
+            border: 1px solid rgba(140, 123, 109, 0.15);
+            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .rating-wrapper:hover {
+            border-color: var(--accent);
+            background: var(--white);
+            box-shadow: 0 10px 30px rgba(44, 42, 41, 0.04);
+        }
+
+        .rating-container {
+            display: inline-flex;
+            flex-direction: row-reverse;
+            gap: 0.75rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .rating-container input {
+            display: none;
+        }
+
+        .rating-container label {
+            font-size: 2.2rem;
+            color: #d1d5db;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .rating-container label:hover,
+        .rating-container label:hover ~ label,
+        .rating-container input:checked ~ label {
+            color: var(--accent);
+            transform: scale(1.15) translateY(-2px);
+        }
+
+        .rating-label-text {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-top: 0.8rem;
+            min-height: 1.5rem;
+            letter-spacing: 0.3px;
+        }
+
+        /* --- FORM CONTROLS --- */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .form-control {
+            width: 100%;
+            background: var(--bg-light);
+            color: var(--primary);
+            border: 1px solid rgba(140, 123, 109, 0.2);
+            border-radius: 10px;
+            padding: 0.9rem 1.1rem;
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition);
+            font-family: 'Plus Jakarta Sans', 'Noto Sans Sinhala', sans-serif;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent);
+            background: var(--white);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 140px;
+        }
+
+        .btn-submit {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
+            letter-spacing: 0.5px;
+        }
+
+        .btn-submit:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(44, 42, 41, 0.1);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #232120;
+            color: #aaa;
+            padding: 4rem 0 1.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        @media(max-width: 992px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 2.5rem;
+            }
+        }
+
+        @media(max-width: 480px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .footer-col h3 {
+            color: var(--white);
+            font-size: 1.05rem;
+            margin-bottom: 1.2rem;
+            font-weight: 600;
+        }
+
+        .footer-col p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.6rem;
+        }
+
+        .footer-col ul li a {
+            transition: var(--transition);
+            color: #aaa;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--accent);
+            padding-left: 5px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 0.75rem;
+            font-size: 1rem;
+            margin-top: 1.2rem;
+        }
+
+        .social-icons a {
+            color: var(--white);
+            background: rgba(255,255,255,0.05);
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-icons a:hover {
+            background: var(--accent);
+            color: var(--primary);
+            border-color: var(--accent);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.08);
+            padding-top: 1.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #777;
+        }
+
+        /* --- BACK TO TOP BUTTON --- */
+        .back-to-top {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 45px;
+            height: 45px;
+            background-color: var(--accent);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            box-shadow: var(--shadow-hover);
+            cursor: pointer;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: var(--transition);
+            border: none;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            background-color: var(--white);
+            color: var(--primary);
+        }
+
+        /* --- MOBILE MENU OVERLAY --- */
+        @media(max-width: 991px) {
+            .nav-links {
+                position: fixed;
+                top: 85px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 85px);
+                background: var(--white);
+                flex-direction: column;
+                justify-content: center;
+                gap: 2rem;
+                transition: var(--transition);
+                box-shadow: var(--shadow-hover);
+            }
+            .nav-links.active {
+                left: 0;
+            }
+            .nav-links.active a {
+                color: var(--primary) !important;
+                font-size: 1.2rem;
+            }
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+        /* --- 320PX ULTRA-SMALL DEVICE OPTIMIZATION --- */
+        @media(max-width: 360px) {
+            body {
+                padding-top: 75px;
+            }
+            .container {
+                padding: 0 1rem;
+            }
+             .logo {
+                font-size: 1.15rem;
+                letter-spacing: 0.8px;
+            }
+
+            .nav-container {
+                height: 75px;
+            }
+            header {
+                height: 75px;
+            }
+            .nav-links {
+                top: 75px;
+                height: calc(100vh - 75px);
+            }
+            .page-header {
+                padding: 3.5rem 0 2rem 0;
+            }
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+            .page-header p {
+                font-size: 0.85rem;
+            }
+            .policy-content-section {
+                padding: 2.5rem 0 3.5rem 0;
+            }
+            .master-policy-card {
+                padding: 1.5rem 1rem;
+                border-radius: 15px;
+                margin-bottom: 1.5rem;
+            }
+            .rating-wrapper {
+                padding: 1rem 0.75rem;
+                margin-bottom: 1rem;
+            }
+            .rating-container {
+                gap: 0.4rem;
+            }
+            .rating-container label {
+                font-size: 1.7rem;
+            }
+            .rating-label-text {
+                font-size: 0.82rem;
+            }
+            .form-group {
+                margin-bottom: 1.1rem;
+            }
+            .form-group label {
+                font-size: 0.85rem;
+            }
+            .form-control {
+                padding: 0.75rem 0.9rem;
+                font-size: 0.85rem;
+                border-radius: 8px;
+            }
+            textarea.form-control {
+                min-height: 110px;
+            }
+            .btn-submit {
+                padding: 0.85rem;
+                font-size: 0.9rem;
+                border-radius: 8px;
+            }
+            footer {
+                padding: 3rem 0 1rem 0;
+                font-size: 0.82rem;
+            }
+            .footer-col h3 {
+                font-size: 0.95rem;
+            }
+            .footer-bottom {
+                font-size: 0.75rem;
+            }
+            .back-to-top {
+                width: 38px;
+                height: 38px;
+                bottom: 15px;
+                right: 15px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body id="top">
+
+    <!-- NAVIGATION -->
+    <header id="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">Lavendra <span>Collection</span></a>
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#categories">Collections</a></li>
+                    <li><a href="index.html#quiz">Daily Quiz</a></li> 
+                    <li><a href="index.html#inspiration">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle" id="menuToggle">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- BACK TO TOP BUTTON -->
+    <a href="#top" class="back-to-top" id="backToTopBtn" aria-label="Back to top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </a>
+
+    <!-- PAGE HEADER -->
+    <section class="page-header">
+        <div class="container">
+            <span>Feedback</span>
+            <h1>Your Feedback</h1>
+            <p>ඔබගේ වටිනා අදහස් සහ ප්‍රතිචාර අප වෙත යොමු කරන්න.</p>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT SECTION -->
+    <section class="policy-content-section">
+        <div class="container">
+            <div class="policy-container">
+                <div class="master-policy-card">
+                    <form id="feedbackForm">
+                        <div class="form-group">
+                            <label for="customer-name">Your Name / නම (Optional)</label>
+                            <input type="text" id="customer-name" class="form-control" placeholder="Enter your full name">
+                        </div>                                       
+                        
+                        <div class="form-group">
+                            <label>Your Rating / ඔබේ ඇගයීම</label>
+                            <div class="rating-wrapper">
+                                <div class="rating-container" id="ratingContainer">
+                                    <input type="radio" id="star5" name="rating" value="5"><label for="star5" title="Excellent"><i class="fa-solid fa-star"></i></label>
+                                    <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="Good"><i class="fa-solid fa-star"></i></label>
+                                    <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="Average"><i class="fa-solid fa-star"></i></label>
+                                    <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="Poor"><i class="fa-solid fa-star"></i></label>
+                                    <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="Very Poor"><i class="fa-solid fa-star"></i></label>
+                                </div>
+                                <span class="rating-label-text" id="ratingText">Select your rating / ඔබේ තේරීම කරන්න</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="feedback-message">Your Thoughts / ඔබේ අදහස</label>
+                            <textarea id="feedback-message" class="form-control" required placeholder="Share your suggestions or review..."></textarea>
+                        </div>
+                        <button type="submit" id="submitBtn" class="btn-submit">Submit Feedback / අදහස් යොමු කරන්න</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3 class="logo">Lavendra <span>Collection</span></h3>                    
+                  
+                    <div class="social-icons">
+                        <a href="https://web.facebook.com/profile.php?id=61594942238720"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://www.youtube.com/@lavendracollection.online"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Collections</h3>
+                    <ul>
+                        <li><a href="#">Sewing & Crafts</a></li>
+                        <li><a href="#">Fashion & Beauty</a></li>
+                        <li><a href="#">Business, Tech & Productivity</a></li>
+                        <li><a href="#">Science & Education </a></li>
+                        <li><a href="#">Daily Quiz</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                   <h3>Quick Links</h3>
+                    <ul>
+                         <li><a href="index.html">Home</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms & Conditions</a></li>
+                    <li><a href="feedback.html">Feedback</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact</h3>
+                    <p><strong>lavendracollection@gmail.com</strong></p>
+                    
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Lavendra Collection. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT & SUPABASE INTEGRATION -->
+    <script>
+        // Back to Top Button visibility
+        const backToTopBtn = document.getElementById('backToTopBtn');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            } else {
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            }
+        });
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                const icon = menuToggle.querySelector('i');
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            });
+        });
+
+        // Dynamic Rating Text Description
+        const ratingInputs = document.querySelectorAll('input[name="rating"]');
+        const ratingText = document.getElementById('ratingText');
+
+        const ratingDescriptions = {
+            "5": "⭐⭐⭐⭐⭐ Excellent / ඉතා විශිෂ්ටයි",
+            "4": "⭐⭐⭐⭐ Good / හොඳයි",
+            "3": "⭐⭐⭐ Average / සාමාන්‍යයි",
+            "2": "⭐⭐ Poor / තවත් දියුණු විය යුතුය",
+            "1": "⭐ Very Poor / දුර්වලයි"
+        };
+
+        ratingInputs.forEach(input => {
+            input.addEventListener('change', (e) => {
+                ratingText.textContent = ratingDescriptions[e.target.value] || "";
+            });
+        });
+
+        // Initialize Supabase Client
+        const _sb = supabase.createClient('https://pelbzkhuxsvmldfqzlkx.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBlbGJ6a2h1eHN2bWxkZnF6bGt4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5MjI3NzgsImV4cCI6MjA5NzQ5ODc3OH0.BQ_k-PABq9E52eTRiQ0hqkhRVVA_U_bShTBEofB5lY4');
+
+        const form = document.getElementById('feedbackForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const originalBtnText = submitBtn.innerText;
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Submitting / යවමින් පවතී...";
+
+            const name = document.getElementById('customer-name').value.trim();
+            const message = document.getElementById('feedback-message').value.trim();
+            const selectedRatingElement = document.querySelector('input[name="rating"]:checked');
+            const rating = selectedRatingElement ? parseInt(selectedRatingElement.value) : null;
+
+            try {
+                const { data, error } = await _sb
+                    .from('feedback')
+                    .insert([
+                        {
+                            student_name: name || null,
+                            rating: rating,
+                            message: message
+                        }
+                    ]);
+
+                if (error) throw error;
+
+                alert('ස්තූතියි! ඔබේ අදහස් සාර්ථකව යොමු කරන ලදී. (Thank you! Your feedback has been submitted.)');
+                form.reset();
+                ratingText.textContent = "Select your rating / ඔබේ තේරීම කරන්න";
+            } catch (error) {
+                console.error('Supabase Error:', error);
+                alert('Error submitting feedback. Please try again. / යම් දෝෂයක් සිදු වී ඇත. පසුව නැවත උත්සාහ කරන්න.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalBtnText;
+            }
+        });
+    </script>
+</body>
+</html>
