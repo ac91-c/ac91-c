@@ -1040,47 +1040,47 @@
         });
 
         // Initialize Supabase Client
-        const _sb = supabase.createClient('https://pelbzkhuxsvmldfqzlkx.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXAiLCJyZWYiOiJwZWxiemtodXhzd2xkZnF6bGt4IiwiaWF0IjoxNzgxOTIyNzc4LCJleHAiOjIwOTc0OTg3Nzh9.BQ_k-PABq9E52eTRiQ0hqkhRVVA_U_bShTBEofB5lY4');
- 
-        const form = document.getElementById('feedbackForm'); 
-        const submitBtn = document.getElementById('submitBtn'); 
- 
-        form.addEventListener('submit', async (e) => { 
-            e.preventDefault(); 
- 
-            const originalBtnText = submitBtn.innerText; 
-            submitBtn.disabled = true; 
-            submitBtn.innerText = "Submitting / යවමින් පවතී..."; 
- 
-            const name = document.getElementById('customer-name').value.trim(); 
-            const message = document.getElementById('feedback-message').value.trim(); 
-            const selectedRatingElement = document.querySelector('input[name="rating"]:checked'); 
-            const rating = selectedRatingElement ? parseInt(selectedRatingElement.value) : null; 
- 
-            try { 
-                const { data, error } = await _sb 
-                    .from('feedback') 
-                    .insert([ 
-                        { 
-                            student_name: name || null, 
-                            rating: rating, 
-                            message: message 
-                        } 
-                    ]); 
- 
-                if (error) throw error; 
- 
-                alert('ස්තූතියි! ඔබේ අදහස් සාර්ථකව යොමු කරන ලදී. (Thank you! Your feedback has been submitted.)'); 
-                form.reset(); 
-                ratingText.textContent = "Select your rating / ඔබේ තේරීම කරන්න"; 
-            } catch (error) { 
-                console.error('Supabase Error:', error); 
-                alert('Error submitting feedback. Please try again. / යම් දෝෂයක් සිදු වී ඇත. පසුව නැවත උත්සාහ කරන්න.'); 
-            } finally { 
-                submitBtn.disabled = false; 
-                submitBtn.innerText = originalBtnText; 
-            } 
-        }); 
-    </script> 
+        const _sb = supabase.createClient('https://pelbzkhuxsvmldfqzlkx.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBlbGJ6a2h1eHN2bWxkZnF6bGt4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5MjI3NzgsImV4cCI6MjA5NzQ5ODc3OH0.BQ_k-PABq9E52eTRiQ0hqkhRVVA_U_bShTBEofB5lY4');
+
+        const form = document.getElementById('feedbackForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const originalBtnText = submitBtn.innerText;
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Submitting / යවමින් පවතී...";
+
+            const name = document.getElementById('customer-name').value.trim();
+            const message = document.getElementById('feedback-message').value.trim();
+            const selectedRatingElement = document.querySelector('input[name="rating"]:checked');
+            const rating = selectedRatingElement ? parseInt(selectedRatingElement.value) : null;
+
+            try {
+                const { data, error } = await _sb
+                    .from('feedback')
+                    .insert([
+                        {
+                            student_name: name || null,
+                            rating: rating,
+                            message: message
+                        }
+                    ]);
+
+                if (error) throw error;
+
+                alert('ස්තූතියි! ඔබේ අදහස් සාර්ථකව යොමු කරන ලදී. (Thank you! Your feedback has been submitted.)');
+                form.reset();
+                ratingText.textContent = "Select your rating / ඔබේ තේරීම කරන්න";
+            } catch (error) {
+                console.error('Supabase Error:', error);
+                alert('Error submitting feedback. Please try again. / යම් දෝෂයක් සිදු වී ඇත. පසුව නැවත උත්සාහ කරන්න.');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalBtnText;
+            }
+        });
+    </script>
 </body> 
 </html>

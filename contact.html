@@ -1153,11 +1153,8 @@
             });
         });
 
-        // Initialize Supabase Client
-        const _sb = supabase.createClient(
-            'https://pelbzkhuxsvmldfqzlkx.supabase.co',
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwZWxiemtoaHV4c3ZtbGRmcXpsa3giLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4MTkyMjc3NywiZXhwIjoyMDk3NDk4Nzc4fQ.BQ_k-PABq9E52eTRiQ0hqkhRVVA_U_bShTBEofB5lY4'
-        );
+         // Initialize Supabase Client
+        const _sb = supabase.createClient('https://pelbzkhuxsvmldfqzlkx.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBlbGJ6a2h1eHN2bWxkZnF6bGt4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5MjI3NzgsImV4cCI6MjA5NzQ5ODc3OH0.BQ_k-PABq9E52eTRiQ0hqkhRVVA_U_bShTBEofB5lY4');
 
         // Contact Form Submission Handler
         document.getElementById('contactForm').addEventListener('submit', async (e) => {
@@ -1188,12 +1185,9 @@
 
                 alert('Message sent successfully! / පණිවිඩය සාර්ථකව යවන ලදී!');
                 document.getElementById('contactForm').reset();
-
             } catch (error) {
                 console.error('Error submitting form:', error);
-
                 alert('Something went wrong. Please try again later. / යම් දෝෂයක් සිදු වී ඇත. පසුව නැවත උත්සාහ කරන්න.');
-
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = originalBtnText;
