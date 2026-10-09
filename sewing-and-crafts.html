@@ -791,7 +791,6 @@
     <div class="container">
         <div class="categories-grid" id="categoriesGrid">
             
-           
 
 
 
@@ -864,11 +863,15 @@
     });
 
     // Smooth Scroll to Top
-    backToTopBtn.addEventListener('click', () => {
+    script_backToTop = () => {
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         });
+    }
+
+    backToTopBtn.addEventListener('click', () => {
+        script_backToTop();
     });
 
     // Mobile Menu Toggle
@@ -887,13 +890,18 @@
         }
     });
 
-    // Close mobile menu on link click
+    // Close mobile menu & handle section navigation smoothly
     document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', () => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+
+            // Close mobile menu and reset burger icon first
             navLinks.classList.remove('active');
             const icon = menuToggle.querySelector('i');
             icon.classList.remove('fa-xmark');
             icon.classList.add('fa-bars');
+
+           
         });
     });
 
