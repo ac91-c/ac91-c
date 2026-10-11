@@ -1,399 +1,807 @@
+
 <!DOCTYPE html>
 <html lang="si">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Quiz | Lavendra Collection</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Sinhala:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Quiz-1 | Lavendra Collection</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Noto+Serif+Sinhala:wght@400;600;700&family=Noto+Sans+Sinhala:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Supabase JS Client CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- MathJax for rendering equations -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        
     <style>
         :root {
-            --max-width: 800px;
-            --transition: all .3s cubic-bezier(.4, 0, .2, 1);
+            --primary: #2C2A29;
+            --secondary: #8C7B6D;
+            --accent: #D4AF37;
+            --bg-light: #F9F8F6;
+            --white: #FFFFFF;
+            --text-main: #2B2825;
+            --text-muted: #665E55;
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --shadow-subtle: 0 10px 30px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.1);
+            --border-subtle: rgba(140, 123, 109, 0.2);
         }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Noto Sans Sinhala', 'Inter', sans-serif;
         }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            background: linear-gradient(135deg, #fff0f5 0%, #fff5f8 50%, #fef2f2 100%);
-            color: #0f172a;
+            font-family: 'Plus Jakarta Sans', 'Noto Sans Sinhala', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-size: 13px;
+        }
+
+        @media(min-width: 320px) {
+            body {
+                font-size: 13.5px;
+            }
+        }
+
+        @media(min-width: 360px) {
+            body {
+                font-size: 15px;
+            }
+        }
+
+        @media(min-width: 768px) {
+            body {
+                font-size: 16px;
+            }
+        }
+
+        h1, h2, h3, .serif-font {
+            font-family: 'Playfair Display', 'Noto Serif Sinhala', serif;
+            color: var(--primary);
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* --- HEADER & NAVIGATION --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: transparent;
+            border-bottom: 1px solid transparent;
+            box-shadow: none;
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+            background: var(--white);
+            border-bottom: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 55px;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 0.75rem;
+            gap: 0.4rem;
+        }
+
+        @media(min-width: 320px) {
+            .nav-container {
+                height: 58px;
+                padding: 0 0.85rem;
+            }
+        }
+
+        @media(min-width: 360px) {
+            .nav-container {
+                height: 65px;
+                padding: 0 1rem;
+                gap: 0.5rem;
+            }
+        }
+
+        @media(min-width: 768px) {
+            .nav-container {
+                height: 90px;
+                padding: 0 2rem;
+                gap: 1rem;
+            }
+        }
+
+        .logo {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1px;
+            text-transform: uppercase;
+            color: var(--white);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-shrink: 1;
+            min-width: 0;
+            transition: var(--transition);
+        }
+
+        @media(min-width: 320px) {
+            .logo {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media(min-width: 360px) {
+            .logo {
+                font-size: 0.95rem;
+                letter-spacing: 0.2px;
+            }
+        }
+
+        header.scrolled .logo {
+            color: var(--primary);
+        }
+
+        @media(min-width: 768px) {
+            .logo {
+                font-size: 1.8rem;
+                letter-spacing: 2px;
+                flex-shrink: 0;
+            }
+        }
+
+        .logo span {
+            color: var(--accent);
+            font-style: italic;
+        }
+
+        .back-home-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.3rem 0.5rem;
+            background-color: transparent;
+            color: var(--white);
+            font-weight: 600;
+            font-size: 0.58rem;
+            letter-spacing: 0.1px;
+            text-transform: uppercase;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transition: var(--transition);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        @media(min-width: 320px) {
+            .back-home-btn {
+                font-size: 0.62rem;
+                padding: 0.32rem 0.6rem;
+            }
+        }
+
+        @media(min-width: 360px) {
+            .back-home-btn {
+                padding: 0.4rem 0.75rem;
+                font-size: 0.7rem;
+                gap: 0.4rem;
+            }
+        }
+
+        header.scrolled .back-home-btn {
+            color: var(--primary);
+            border-color: var(--secondary);
+        }
+
+        @media(min-width: 768px) {
+            .back-home-btn {
+                padding: 0.6rem 1.4rem;
+                font-size: 0.75rem;
+                letter-spacing: 1px;
+            }
+        }
+
+        .back-home-btn:hover {
+            background-color: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        header.scrolled .back-home-btn:hover {
+            background-color: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        /* --- HERO SECTION --- */
+        .quiz-hero {
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 1rem 0.5rem;
             position: relative;
+            padding: 100px 0.75rem 50px 0.75rem;
+            background: linear-gradient(rgba(44, 42, 41, 0.65), rgba(44, 42, 41, 0.65)), url('lavendra-collection-daily-quiz.webp') no-repeat center center/cover;
+            text-align: center;
+            border-bottom: 1px solid var(--border-subtle);
         }
-        .home-btn {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(255, 255, 255, 0.9);
-            color: #d81b60;
-            border: 2px solid rgba(255, 117, 140, 0.4);
-            padding: 0.4rem 0.8rem;
-            border-radius: 50px;
+
+        @media(min-width: 320px) {
+            .quiz-hero {
+                padding: 100px 0.85rem 50px 0.85rem;
+            }
+        }
+
+        @media(min-width: 360px) {
+            .quiz-hero {
+                padding: 110px 1rem 60px 1rem;
+            }
+        }
+
+        @media(min-width: 768px) {
+            .quiz-hero {
+                min-height: 100vh;
+                padding: 120px 2rem;
+            }
+        }
+
+        .hero-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .quiz-hero h1 {
+            font-size: clamp(1.25rem, 4.5vw, 3.2rem);
+            margin-bottom: 0.6rem;
+            font-weight: 600;
+            color: var(--white);
+            word-break: break-word;
+        }
+
+        .quiz-hero p {
+            font-size: clamp(0.8rem, 2vw, 1.15rem);
+            max-width: 750px;
+            margin: 0 auto;
+            color: var(--bg-light);
+            font-weight: 400;
+            line-height: 1.5;
+            padding: 0 0.25rem;
+        }
+
+        /* --- CONTENT CONTAINER --- */
+        .content-container {
+            max-width: 900px;
+            margin: 1.5rem auto 2.5rem auto;
+            position: relative;
+            z-index: 10;
+            padding: 0 0.75rem;
+        }
+
+        @media(min-width: 320px) {
+            .content-container {
+                padding: 0 0.85rem;
+            }
+        }
+
+        @media(min-width: 360px) {
+            .content-container {
+                margin: 2.5rem auto 3.5rem auto;
+                padding: 0 1rem;
+            }
+        }
+
+        @media(min-width: 768px) {
+            .content-container {
+                margin: 4rem auto 6rem auto;
+                padding: 0 2rem;
+            }
+        }
+
+        .lesson-card, .questions-card, .form-container-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 1.15rem 1rem;
+            box-shadow: var(--shadow-subtle);
+            border: 1px solid var(--border-subtle);
+            margin-bottom: 1.2rem;
+        }
+
+        @media(min-width: 320px) {
+            .lesson-card, .questions-card, .form-container-card {
+                border-radius: 12px;
+                padding: 1.35rem 1.15rem;
+                margin-bottom: 1.4rem;
+            }
+        }
+
+        @media(min-width: 360px) {
+            .lesson-card, .questions-card, .form-container-card {
+                border-radius: 14px;
+                padding: 2rem 1.5rem;
+                margin-bottom: 2rem;
+            }
+        }
+
+        @media(min-width: 768px) {
+            .lesson-card, .questions-card, .form-container-card {
+                padding: 3rem 2.5rem;
+                margin-bottom: 2.5rem;
+            }
+        }
+
+        .lesson-card h2, .questions-card h2, .form-container-card h2 {
+            font-size: 1.1rem;
+            margin-bottom: 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            word-break: break-word;
+        }
+
+        @media(min-width: 320px) {
+            .lesson-card h2, .questions-card h2, .form-container-card h2 {
+                font-size: 1.18rem;
+            }
+        }
+
+        @media(min-width: 360px) {
+            .lesson-card h2, .questions-card h2, .form-container-card h2 {
+                font-size: 1.4rem;
+                margin-bottom: 1rem;
+                gap: 0.6rem;
+            }
+        }
+
+        @media(min-width: 768px) {
+            .lesson-card h2, .questions-card h2, .form-container-card h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        .lesson-card h2 i, .questions-card h2 i, .form-container-card h2 i {
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .lesson-card p, .lesson-card li {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.55;
+            margin-bottom: 0.7rem;
+            overflow-x: auto;
+        }
+
+        @media(min-width: 320px) {
+            .lesson-card p, .lesson-card li {
+                font-size: 0.88rem;
+            }
+        }
+
+        @media(min-width: 360px) {
+            .lesson-card p, .lesson-card li {
+                font-size: 0.98rem;
+                line-height: 1.7;
+                margin-bottom: 1rem;
+            }
+        }
+
+        .lesson-card ul {
+            padding-left: 1rem;
+            margin-bottom: 0.9rem;
+        }
+
+        @media(min-width: 360px) {
+            .lesson-card ul {
+                padding-left: 1.5rem;
+                margin-bottom: 1.2rem;
+            }
+        }
+
+        .resource-link-box {
+            background-color: var(--bg-light);
+            padding: 0.75rem;
+            border-radius: 5px;
+            border-left: 3px solid var(--accent);
+            margin-top: 1rem;
+        }
+
+        @media(min-width: 320px) {
+            .resource-link-box {
+                padding: 0.85rem;
+                border-radius: 6px;
+            }
+        }
+
+        @media(min-width: 360px) {
+            .resource-link-box {
+                padding: 1.2rem;
+                border-radius: 8px;
+                border-left-width: 4px;
+                margin-top: 1.5rem;
+            }
+        }
+
+        .resource-link-box a {
+            color: var(--primary);
+            font-weight: 600;
             font-size: 0.8rem;
-            font-weight: 700;
-            cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 0.3rem;
             transition: var(--transition);
-            z-index: 1000;
-            text-decoration: none;
-            box-shadow: 0 4px 15px rgba(255, 65, 108, 0.15);
+            word-break: break-word;
         }
-        .home-btn:hover {
-            background: #fff;
-            color: #ff416c;
-            border-color: #ff416c;
-            transform: scale(1.05);
+
+        @media(min-width: 320px) {
+            .resource-link-box a {
+                font-size: 0.84rem;
+            }
         }
-        .container {
-            width: 100%;
-            max-width: var(--max-width);
-            margin: 2.5rem auto 0 auto;
+
+        @media(min-width: 360px) {
+            .resource-link-box a {
+                font-size: 0.95rem;
+                gap: 0.4rem;
+            }
         }
-        .notice-card {
-            background: rgba(255, 255, 255, 0.9);
-            border: 2px dashed rgba(255, 117, 140, 0.6);
-            border-radius: 16px;
-            padding: 0.75rem 1rem;
+
+        .resource-link-box a:hover {
+            color: var(--accent);
+        }
+
+        /* Question items styling */
+        .question-item {
+            margin-bottom: 0.5rem;
+            overflow-x: auto;
+        }
+
+        .question-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            line-height: 1.45;
+        }
+
+        @media(min-width: 320px) {
+            .question-title {
+                font-size: 0.95rem;
+            }
+        }
+
+        @media(min-width: 360px) {
+            .question-title {
+                font-size: 1.05rem;
+                margin-bottom: 0.8rem;
+            }
+        }
+
+        .form-container-card p {
+            color: var(--text-muted);
+            font-size: 0.82rem;
             margin-bottom: 1rem;
-            text-align: center;
-            font-size: 0.8rem;
-            color: #d81b60;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            box-shadow: 0 4px 15px rgba(255, 65, 108, 0.1);
+            line-height: 1.5;
         }
-        .quiz-card {
-            background: linear-gradient(-45deg, #fff0f5, #ffe4e1, #fff5ee, #ffc0cb);
-            background-size: 400% 400%;
-            animation: bgGradientMove 10s ease infinite, glowingBorder 3s infinite;
-            border: 2.5px solid #ff758c;
-            border-radius: 20px;
-            padding: 1.25rem 1rem;
-            position: relative;
-            box-shadow: 0 10px 25px rgba(255, 65, 108, 0.2);
+
+        @media(min-width: 320px) {
+            .form-container-card p {
+                font-size: 0.86rem;
+            }
         }
-        @keyframes glowingBorder {
-            0% { border-color: #ff758c; box-shadow: 0 0 15px rgba(255, 117, 140, 0.4); }
-            50% { border-color: #ffeb3b; box-shadow: 0 0 20px rgba(255, 235, 59, 0.6); }
-            100% { border-color: #ff758c; box-shadow: 0 0 15px rgba(255, 117, 140, 0.4); }
+
+        @media(min-width: 360px) {
+            .form-container-card p {
+                font-size: 0.95rem;
+                margin-bottom: 1.5rem;
+            }
         }
-        @keyframes bgGradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .register-container h2 {
-            font-size: 1.35rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #d81b60, #ad1457);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: .5rem;
-            text-align: center;
-        }
-        .register-container p {
-            font-size: 0.85rem;
-            color: #4a5568;
-            margin-bottom: 1.25rem;
-            line-height: 1.4;
-            text-align: center;
-        }
-        .form-group {
-            margin-bottom: 1rem;
-            text-align: left;
-            width: 100%;
-            max-width: 100%;
-        }
-        .form-group label {
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #334155;
-            margin-bottom: .3rem;
-        }
-        .form-control {
-            width: 100%;
-            padding: 0.65rem 0.9rem;
-            border: 2px solid rgba(255, 117, 140, 0.4);
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.9);
-            font-size: 0.85rem;
-            outline: none;
-            transition: var(--transition);
-        }
-        .form-control:focus {
-            border-color: #ff416c;
-            background: #fff;
-            box-shadow: 0 0 10px rgba(255, 65, 108, 0.2);
-        }
-        .quiz-screen {
-            display: none;
-        }
-        .quiz-header {
+
+        /* Native Form Input Styling */
+        .quiz-form {
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            gap: 0.4rem;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid rgba(255, 117, 140, 0.2);
-            padding-bottom: 0.75rem;
+            gap: 1rem;
+            margin-top: 0.8rem;
         }
-        .quiz-title {
-            font-size: 1.1rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #d81b60, #ad1457);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+
+        @media(min-width: 360px) {
+            .quiz-form {
+                gap: 1.2rem;
+                margin-top: 1rem;
+            }
         }
-        .question-counter {
-            background: linear-gradient(135deg, #ff416c, #ff4b2b);
-            color: white;
-            padding: 0.25rem 0.7rem;
-            border-radius: 50px;
-            font-size: 0.7rem;
-            font-weight: 700;
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            text-align: left;
         }
-        .question-text {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 1rem;
-            line-height: 1.4;
+
+        .form-group label {
+            font-weight: 600;
+            font-size: 0.82rem;
+            color: var(--primary);
         }
-        .answer-box-container {
-            margin-bottom: 1rem;
+
+        @media(min-width: 320px) {
+            .form-group label {
+                font-size: 0.86rem;
+            }
         }
-        .answer-textarea {
-            width: 100%;
-            padding: 0.75rem 0.9rem;
-            border: 2px solid rgba(255, 117, 140, 0.4);
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.9);
+
+        @media(min-width: 360px) {
+            .form-group label {
+                font-size: 0.9rem;
+            }
+        }
+
+        .form-group input {
+            padding: 0.65rem 0.85rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-subtle);
+            background-color: var(--bg-light);
+            font-family: inherit;
             font-size: 0.85rem;
-            outline: none;
-            resize: vertical;
+            color: var(--text-main);
             transition: var(--transition);
         }
-        .answer-textarea:focus {
-            border-color: #ff416c;
-            background: #fff;
-            box-shadow: 0 0 10px rgba(255, 65, 108, 0.2);
+
+        @media(min-width: 320px) {
+            .form-group input {
+                font-size: 0.9rem;
+                padding: 0.7rem 0.9rem;
+            }
         }
-        .quiz-footer {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
+
+        @media(min-width: 360px) {
+            .form-group input {
+                padding: 0.8rem 1rem;
+                border-radius: 8px;
+                font-size: 0.95rem;
+            }
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background-color: var(--white);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+        }
+
+        /* Submit Button Styling */
+        .form-link-container {
+            text-align: center;
             margin-top: 1rem;
-            border-top: 2px solid rgba(255, 117, 140, 0.2);
-            padding-top: 0.75rem;
         }
-        .btn {
-            background: linear-gradient(135deg, #ff416c, #ff4b2b);
-            color: white;
-            border: none;
-            padding: 0.7rem 1.5rem;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            cursor: pointer;
+
+        @media(min-width: 360px) {
+            .form-link-container {
+                margin-top: 1.2rem;
+            }
+        }
+
+        .form-link-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
-            box-shadow: 0 5px 15px rgba(255, 65, 108, 0.4);
+            gap: 0.4rem;
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 0.7rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.78rem;
             transition: var(--transition);
+            box-shadow: var(--shadow-subtle);
             width: 100%;
+            border: none;
+            cursor: pointer;
         }
-        .btn:hover {
-            transform: scale(1.02);
+
+        @media(min-width: 320px) {
+            .form-link-btn {
+                font-size: 0.82rem;
+                padding: 0.75rem 1.1rem;
+            }
         }
-        .result-screen {
-            display: none;
+
+        @media(min-width: 360px) {
+            .form-link-btn {
+                padding: 0.85rem 1.5rem;
+                font-size: 0.9rem;
+                width: auto;
+            }
+        }
+
+        @media(min-width: 768px) {
+            .form-link-btn {
+                padding: 0.85rem 2rem;
+                font-size: 0.95rem;
+            }
+        }
+
+        .form-link-btn:hover {
+            background-color: var(--accent);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #232120;
+            color: #B5A89E;
+            padding: 1.5rem 0.75rem;
+            font-size: 0.72rem;
             text-align: center;
-            padding: 1rem 0;
+            border-top: 1px solid rgba(255,255,255,0.08);
         }
-        .result-screen h2 {
-            font-size: 1.35rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #d81b60, #ad1457);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 0.75rem;
+
+        @media(min-width: 320px) {
+            footer {
+                padding: 1.8rem 0.85rem;
+                font-size: 0.75rem;
+            }
         }
-        .result-screen p {
-            font-size: 0.85rem;
-            color: #4a5568;
-            margin-bottom: 1.25rem;
-            line-height: 1.4;
+
+        @media(min-width: 360px) {
+            footer {
+                padding: 2.5rem 1rem;
+                font-size: 0.85rem;
+            }
         }
-        @media (min-width: 481px) {
-            body { padding: 2rem 1rem; }
-            .home-btn { top: 20px; left: 20px; padding: 0.6rem 1.2rem; font-size: 0.95rem; gap: 0.5rem; }
-            .container { margin-top: 3.5rem; }
-            .notice-card { font-size: 0.95rem; padding: 0.9rem 1.25rem; border-radius: 16px; margin-bottom: 1.5rem; }
-            .quiz-card { padding: 2.5rem; border-radius: 30px; }
-            .register-container h2 { font-size: 2rem; margin-bottom: .75rem; }
-            .register-container p { font-size: 1.05rem; margin-bottom: 2rem; }
-            .form-group { max-width: 450px; margin-left: auto; margin-right: auto; margin-bottom: 1.5rem; }
-            .form-group label { font-size: .95rem; margin-bottom: .5rem; }
-            .form-control { padding: .9rem 1.25rem; border-radius: 16px; font-size: 1rem; }
-            .quiz-header { flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; }
-            .quiz-title { font-size: 1.5rem; }
-            .question-counter { padding: .4rem 1.1rem; font-size: .85rem; }
-            .question-text { font-size: 1.25rem; margin-bottom: 1.5rem; }
-            .answer-textarea { padding: 1rem 1.25rem; border-radius: 16px; font-size: 1rem; }
-            .quiz-footer { margin-top: 2rem; padding-top: 1.5rem; }
-            .btn { padding: .9rem 2.2rem; font-size: 1rem; width: auto; }
-            .result-screen h2 { font-size: 2.2rem; margin-bottom: 1rem; }
-            .result-screen p { font-size: 1.15rem; margin-bottom: 2rem; }
+
+        @media(min-width: 768px) {
+            footer {
+                padding: 4rem 1rem;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
-    <a href="daily-quiz.html" class="home-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
-    <div class="container">
-        <div class="notice-card">
-            <i class="fa-solid fa-circle-info" style="color: #ff416c;"></i>
-            <span>WhatsApp අංකය ජයග්‍රාහකයා සම්බන්ධ කර ගැනීමට පමණක් වන අතර, කිසිදු මුදලක් අය කරනු නොලැබේ.</span>
-        </div>
-        <div class="quiz-card" id="quizCard">
-            <!-- Register Screen -->
-            <div class="register-container" id="registerScreen">
-                <h2>Daily Quiz</h2>
-                <p>ඔබේ නම සහ WhatsApp අංකය ඇතුළත් කර ආරම්භ කරන්න.</p>
-                <form onsubmit="startQuiz(event)">
-                    <div class="form-group">
-                        <label for="userName">ඔබේ නම (Name)</label>
-                        <input type="text" id="userName" class="form-control" placeholder="Name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="userPhone">WhatsApp අංකය (WhatsApp Number)</label>
-                        <input type="tel" id="userPhone" class="form-control" placeholder="WhatsApp Number" pattern="[0-9]{10}" required>
-                    </div>
-                    <button type="submit" class="btn" style="width: 100%;">
-                        Start Quiz <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                </form>
-            </div>
 
-            <!-- Quiz / Question & Answer Screen -->
-            <div class="quiz-screen" id="quizScreen">
-                <div class="quiz-header">
-                    <div class="quiz-title"><i class="fa-solid fa-calculator"></i> Daily Quiz</div>
-                    <div class="question-counter">Daily Quiz - 1</div>
+    <!-- Header Navigation -->
+    <header id="header">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Lavendra <span>Collection</span></a>
+            <a href="daily-quiz.html" class="back-home-btn">
+                <i class="fa-solid fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="quiz-hero">
+        <div class="hero-container">
+            <h1>Quiz-1</h1>
+             <p>ඔබේ නම, දුරකථන අංකය / WhatsApp අංකය  සහ නිවැරදි පිළිතුර පුරවා Submit කරන්න.<br>දුරකථන අංකය / WhatsApp අංකය ජයග්‍රාහකයා සම්බන්ධ කර ගැනීමට පමණක් වන අතර, කිසිදු මුදලක් අය කරනු නොලැබේ.</p>
+                        
+        </div>
+    </section>
+
+    <!-- Main Content Layout -->
+    <main class="content-container">
+
+       
+
+        <!-- Questions Display Section -->
+        <section class="questions-card">
+            <h2><i class="fa-solid fa-clipboard-question"></i> ප්‍රශ්නය - 1 </h2>
+           <br><br>
+            <div class="question-item">
+                <div class="question-title"> \(2x + 5 = 11\) නම්, \(x\) හි අගය කීයද?</div>
+            </div>
+        </section>
+
+        <!-- Embedded Interactive Form Section Connected to Apps Script -->
+        <section class="form-container-card">
+           
+           
+            <form class="quiz-form" id="quizForm">
+                <div class="form-group">
+                    <label for="fullName">සම්පූර්ණ නම (Full Name):</label>
+                    <input type="text" id="fullName" name="fullName" required placeholder="ඔබේ නම මෙහි ලියන්න">
                 </div>
-                <div class="question-container">
-                    <div class="question-text" id="questionText">ප්‍රශ්නය පූරණය වෙමින් පවතී...</div>
-                    <div class="answer-box-container">
-                        <textarea id="answerInput" class="answer-textarea" rows="4" placeholder="ඔබේ පිළිතුර මෙහි ලියන්න..." required></textarea>
-                    </div>
+                                
+                <div class="form-group">
+                    <label for="phoneNum">දුරකථන අංකය / WhatsApp අංකය:</label>
+                    <input type="tel" id="phoneNum" name="phoneNum" required placeholder="07XXXXXXXX">
                 </div>
-                <div class="quiz-footer">
-                    <button class="btn" id="submitBtn" onclick="submitAnswer()">
-                        Submit <i class="fa-solid fa-check"></i>
+
+                <div class="form-group">
+                    <label for="userAnswer">පිළිතුර (\(x\) හි අගය):</label>
+                    <input type="text" id="userAnswer" name="userAnswer" required placeholder="">
+                </div>
+
+                <div class="form-link-container">
+                    <button type="submit" class="form-link-btn" id="submitBtn">
+                        <i class="fa-solid fa-paper-plane"></i> පිළිතුර යොමු කරන්න (Submit)
                     </button>
                 </div>
-            </div>
+            </form>
+        </section>
 
-            <!-- Result Screen -->
-            <div class="result-screen" id="resultScreen">
-                <h2></h2>
-                <p>ඔබේ පිළිතුර සාර්ථකව යොමු කරන ලදී.</p>
-                <button class="btn" onclick="location.reload()">
-                    <i class="fa-solid fa-rotate-right"></i> නැවත පිටුවට යන්න
-                </button>
-            </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div style="max-width: 1280px; margin: 0 auto; padding: 0 1rem;">
+            <p style="font-weight: 500; color: #FFFFFF;">&copy; 2026 Lavendra Collection. All Rights Reserved.</p>
         </div>
-    </div>
+    </footer>
+
+    <!-- JavaScript Application Logic & Apps Script Integration -->
     <script>
-        const SUPABASE_URL = 'https://eahasxhxpouvkoiurwqp.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVhaGFzeGh4cG91dmtvaXVyd3FwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5NTk0NjYsImV4cCI6MjEwNTUzNTQ2Nn0.3D4xGumAb-BoFQuEmgyGrR1VWQ3VRgfA6FUnQfQ4F58';
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        let currentQuestionData = {
-            id: 'monthly-q-1',
-            question: 'ශ්‍රී ලංකාවේ නිදහස් දිනය කවදාද?'
-        };
-
-        window.addEventListener("DOMContentLoaded", async () => {
-            const savedName = localStorage.getItem("quiz_user_name");
-            const savedPhone = localStorage.getItem("quiz_user_phone");
-
-            if (savedName && savedPhone) {
-                document.getElementById("userName").value = savedName;
-                document.getElementById("userPhone").value = savedPhone;
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
             }
-            await fetchMonthlyQuestion();
         });
 
-        async function fetchMonthlyQuestion() {
-            try {
-                // Gets current year and month prefix (e.g., "2026-06")
-                const currentMonthPrefix = new Date().toISOString().slice(0, 7); 
+        // Google Apps Script Form Submission Integration
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzvnyef9RAWF36L7Ws93EOW1B0tydERZNFxfMRaPLr0ugGPMc7FomA92xQcG4KjkHL2/exec';
+        const form = document.getElementById('quizForm');
 
-                let { data, error } = await _supabase
-                    .from('daily_questions')
-                    .select('id, question, quiz_date')
-                    .ilike('quiz_date', `${currentMonthPrefix}%`)
-                    .limit(1)
-                    .single();
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> යොමු කරමින් පවතී...';
+            btn.disabled = true;
 
-                if (!error && data) {
-                    currentQuestionData = data;
-                }
-            } catch (err) {
-                console.log("Using fallback question for the month.");
-            }
-        }
+            let formData = {
+                fullName: document.getElementById('fullName').value,
+                phoneNum: document.getElementById('phoneNum').value,
+                userAnswer: document.getElementById('userAnswer').value
+            };
 
-        function startQuiz(event) {
-            event.preventDefault();
-            localStorage.setItem("quiz_user_name", document.getElementById("userName").value);
-            localStorage.setItem("quiz_user_phone", document.getElementById("userPhone").value);
-
-            document.getElementById("registerScreen").style.display = "none";
-            document.getElementById("quizScreen").style.display = "block";
-            document.getElementById("questionText").textContent = currentQuestionData.question;
-        }
-
-        async function submitAnswer() {
-            const name = localStorage.getItem("quiz_user_name");
-            const phone = localStorage.getItem("quiz_user_phone");
-            const answerText = document.getElementById("answerInput").value.trim();
-
-            if (!answerText) {
-                alert("කරුණාකර ඔබේ පිළිතුර ඇතුළත් කරන්න!");
-                return;
-            }
-
-            try {
-                await _supabase.from('answers').insert([{
-                    question_id: currentQuestionData.id,
-                    content: `[By: ${name}] ${answerText}`,
-                    whatsapp: phone
-                }]);
-            } catch (e) {
-                console.log("Submission error:", e);
-            }
-
-            document.getElementById("quizScreen").style.display = "none";
-            document.getElementById("resultScreen").style.display = "block";
-        }
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                alert('ඔබේ පිළිතුර සාර්ථකව යොමු කරන ලදී!');
+                form.reset();
+                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> පිළිතුර යොමු කරන්න (Submit)';
+                btn.disabled = false;
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                alert('දෝෂයක් සිදු විය. කරුණාකර නැවත උත්සාහ කරන්න.');
+                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> පිළිතුර යොමු කරන්න (Submit)';
+                btn.disabled = false;
+            });
+        });
     </script>
+
 </body>
 </html>
